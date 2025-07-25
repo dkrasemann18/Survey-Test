@@ -34,7 +34,7 @@ const surveyQuestions = [
     },
     {
         label: "Task category?",
-        type: "checkbox", // <--- CHANGED from "radio" to "checkbox"
+        type: "checkbox",
         name: "task_category",
         required: true,
         options: [
@@ -45,9 +45,8 @@ const surveyQuestions = [
     }
 ];
 
-// --- Embedded prompt library (extracted from your CSV, sample) ---
+// --- Embedded prompt library (sample; add all your real prompts here) ---
 const promptLibrary = [
-    // Only a few for brevity; in your real version, paste all CSV rows as objects.
     {
         offering: "Strategy",
         task_category: "Research & Analysis",
@@ -63,7 +62,7 @@ const promptLibrary = [
         task_category: "Brainstorm",
         prompt: "Our client is a large automotive manufacturer looking for growth beyond its core vehicle sales. Brainstorm innovative growth opportunities – for example, new markets, customer segments, or business lines (like mobility services or electric battery technology). For each idea, provide a one-liner on how it could drive revenue or competitive advantage."
     },
-    // ... Copy in ALL rows from your CSV as objects here!
+    // ... Paste all rows from your CSV as objects here!
 ];
 
 // --- Form logic ---
@@ -83,16 +82,15 @@ function renderStep() {
     label.textContent = q.label + (q.required ? ' *' : '');
     div.appendChild(label);
 
-    let input;
     if (q.type === "text" || q.type === "email") {
-        input = document.createElement('input');
+        let input = document.createElement('input');
         input.type = q.type;
         input.name = q.name;
         input.value = userAnswers[q.name] || '';
         if (q.required) input.required = true;
         div.appendChild(input);
     } else if (q.type === "textarea") {
-        input = document.createElement('textarea');
+        let input = document.createElement('textarea');
         input.name = q.name;
         input.rows = 4;
         input.value = userAnswers[q.name] || '';
@@ -114,10 +112,9 @@ function renderStep() {
             optsDiv.appendChild(optionLabel);
         });
         div.appendChild(optsDiv);
-    } else if (q.type === "checkbox") { // <--- ADDED: render checkboxes for multi-select
+    } else if (q.type === "checkbox") {
         let optsDiv = document.createElement('div');
         optsDiv.className = 'options-list';
-        // userAnswers[q.name] should be an array for checkboxes
         let selected = userAnswers[q.name] || [];
         q.options.forEach(opt => {
             let checkboxId = `checkbox_${q.name}_${opt.replace(/[^a-zA-Z0-9]/g, '')}`;
@@ -139,7 +136,7 @@ function renderStep() {
     nextBtn.type = 'button';
     nextBtn.textContent = (currentStep === surveyQuestions.length - 1) ? 'See Prompts' : 'Next';
     nextBtn.onclick = () => {
-        // Save answer
+        let q = surveyQuestions[currentStep];
         if (q.type === "radio") {
             let checked = div.querySelector('input[type=radio]:checked');
             if (q.required && !checked) {
@@ -147,7 +144,7 @@ function renderStep() {
                 return;
             }
             userAnswers[q.name] = checked ? checked.value : '';
-        } else if (q.type === "checkbox") { // <--- ADDED: handle checkbox multi-select
+        } else if (q.type === "checkbox") {
             let checked = div.querySelectorAll('input[type=checkbox]:checked');
             if (q.required && checked.length === 0) {
                 inputError();
