@@ -34,7 +34,7 @@ const surveyQuestions = [
     },
     {
         label: "Task category?",
-        type: "radio",
+        type: "checkbox", // <--- CHANGED from "radio" to "checkbox"
         name: "task_category",
         required: true,
         options: [
@@ -65,12 +65,6 @@ const promptLibrary = [
     },
     // ... Copy in ALL rows from your CSV as objects here!
 ];
-
-// Helper: Capitalize task categories to match radio text
-function normalizeTaskCategory(tc) {
-    // CSV uses "Research & Analysis", "Brainstorm", "Drafting & Writing"
-    return tc.trim();
-}
 
 // --- Form logic ---
 const formContainer = document.getElementById('form-container');
@@ -120,6 +114,25 @@ function renderStep() {
             optsDiv.appendChild(optionLabel);
         });
         div.appendChild(optsDiv);
+    } else if (q.type === "checkbox") { // <--- ADDED: render checkboxes for multi-select
+        let optsDiv = document.createElement('div');
+        optsDiv.className = 'options-list';
+        // userAnswers[q.name] should be an array for checkboxes
+        let selected = userAnswers[q.name] || [];
+        q.options.forEach(opt => {
+            let checkboxId = `checkbox_${q.name}_${opt.replace(/[^a-zA-Z0-9]/g, '')}`;
+            let optionLabel = document.createElement('label');
+            let checkbox = document.createElement('input');
+            checkbox.type = 'checkbox';
+            checkbox.name = q.name;
+            checkbox.value = opt;
+            checkbox.id = checkboxId;
+            if (selected.includes(opt)) checkbox.checked = true;
+            optionLabel.appendChild(checkbox);
+            optionLabel.appendChild(document.createTextNode(opt));
+            optsDiv.appendChild(optionLabel);
+        });
+        div.appendChild(optsDiv);
     }
 
     let nextBtn = document.createElement('button');
@@ -134,6 +147,13 @@ function renderStep() {
                 return;
             }
             userAnswers[q.name] = checked ? checked.value : '';
+        } else if (q.type === "checkbox") { // <--- ADDED: handle checkbox multi-select
+            let checked = div.querySelectorAll('input[type=checkbox]:checked');
+            if (q.required && checked.length === 0) {
+                inputError();
+                return;
+            }
+            userAnswers[q.name] = Array.from(checked).map(cb => cb.value);
         } else {
             let val = div.querySelector(q.type === "textarea" ? 'textarea' : 'input').value.trim();
             if (q.required && !val) {
@@ -166,9 +186,14 @@ function inputError() {
 function showResults() {
     formContainer.style.display = 'none';
     // Filter prompts
+    let selectedOffer = userAnswers['offering'];
+    let selectedTaskCategories = userAnswers['task_category'] || [];
+    if (!Array.isArray(selectedTaskCategories)) {
+        selectedTaskCategories = [selectedTaskCategories];
+    }
     let filtered = promptLibrary.filter(p =>
-        p.offering === userAnswers['offering'] &&
-        normalizeTaskCategory(p.task_category) === userAnswers['task_category']
+        p.offering === selectedOffer &&
+        selectedTaskCategories.includes(p.task_category)
     );
     let html = '';
     if (filtered.length === 0) {
