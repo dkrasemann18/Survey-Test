@@ -1,0 +1,136 @@
+body {
+    font-family: 'Roboto', Arial, sans-serif;
+    background: #fff;
+    color: #222;
+    margin: 0;
+    min-height: 100vh;
+}
+#app {
+    max-width: 430px;
+    margin: 50px auto;
+    padding: 2rem;
+    background: #f7f7f7;
+    border-radius: 24px;
+    box-shadow: 0 4px 24px rgba(0,0,0,0.07);
+}
+.form-container, .results-container {
+    width: 100%;
+}
+h1, h2 {
+    color: #1c1c1c;
+    font-weight: 700;
+    margin-bottom: 1.2rem;
+}
+.question-step {
+    margin-bottom: 2.6rem;
+}
+label {
+    font-weight: 600;
+    font-size: 1.1rem;
+    margin-bottom: 0.7rem;
+    display: block;
+}
+input[type="text"], input[type="email"], textarea, select {
+    width: 100%;
+    padding: 0.9rem 1rem;
+    margin-bottom: 1.1rem;
+    border: 1.5px solid #c8c8c8;
+    border-radius: 8px;
+    font-size: 1rem;
+    background: #fff;
+    transition: border-color 0.2s;
+}
+input:focus, textarea:focus, select:focus {
+    border-color: #86bc25;
+    outline: none;
+}
+.options-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.7rem;
+    margin-bottom: 1.3rem;
+}
+.options-list label {
+    font-weight: 400;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+}
+.options-list input[type="radio"] {
+    accent-color: #86bc25;
+    margin-right: 0.75rem;
+}
+button {
+    background: #86bc25;
+    color: #fff;
+    font-size: 1.07rem;
+    border: none;
+    padding: 0.84rem 1.6rem;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.18s;
+    margin-top: 1.2rem;
+}
+button:hover, button:focus {
+    background: #00463f;
+}
+.actions {
+    display: flex;
+    gap: 1rem;
+    margin-top: 2rem;
+    flex-wrap: wrap;
+}
+#results-list {
+    margin-top: 2rem;
+    background: #fff;
+    padding: 1.5rem;
+    border-radius: 12px;
+    border: 1.5px solid #e0e0e0;
+    box-shadow: 0 2px 7px rgba(0,0,0,0.04);
+    max-height: 350px;
+    overflow-y: auto;
+}
+.prompt-block {
+    margin-bottom: 1.7rem;
+}
+.prompt-block:last-child {
+    margin-bottom: 0;
+}
+.prompt-block .prompt-category {
+    font-size: 0.97rem;
+    color: #86bc25;
+    font-weight: 600;
+    margin-bottom: 0.2rem;
+    display: inline-block;
+}
+.prompt-block .prompt-task {
+    font-size: 0.97rem;
+    color: #009f4d;
+    margin-left: 0.7rem;
+    font-weight: 500;
+}
+.prompt-block .prompt-text {
+    font-size: 1.05rem;
+    color: #222;
+    margin-top: 0.22rem;
+}
+#restart {
+    background: #222;
+    color: #fff;
+}
+#restart:hover {
+    background: #86bc25;
+    color: #fff;
+}
+@media (max-width: 600px) {
+    #app {
+        max-width: 98vw;
+        margin: 0.5rem;
+        padding: 1rem;
+    }
+    #results-list {
+        max-height: 220px;
+        padding: 0.7rem;
+    }
+}
