@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Deloitte Survey & Prompt Finder</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div id="app">
+    <div class="form-container" id="form-container">
+        <!-- Form steps will be injected here -->
+    </div>
+    <div class="results-container" id="results-container" style="display:none;">
+        <h2>Matching Prompts</h2>
+        <div id="results-list"></div>
+        <div class="actions">
+            <button id="download-csv">Download as CSV</button>
+            <button id="download-txt">Download as Text</button>
+            <button id="restart">Start Over</button>
+        </div>
+    </div>
+</div>
+<script src="main.js"></script>
+</body>
+</html>
